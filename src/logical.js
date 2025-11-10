@@ -61,17 +61,15 @@ export function IF(logical_test, value_if_true, value_if_false) {
     return logical_test
   }
 
-  value_if_true = arguments.length >= 2 ? value_if_true : true
-
-  if (value_if_true === undefined || value_if_true === null) {
-    value_if_true = 0
+  const getSafeValue = (value) => {
+  try {
+    return value === undefined || value === null ? 0 : value;
+  } catch (e) {
+    return 0; // Return the default value when an exception occurs
   }
-
-  value_if_false = arguments.length === 3 ? value_if_false : false
-
-  if (value_if_false === undefined || value_if_false === null) {
-    value_if_false = 0
-  }
+  };
+  value_if_true = arguments.length >= 2 ? getSafeValue(value_if_true) : true;
+  value_if_false = arguments.length === 3 ? getSafeValue(value_if_false) : false;
 
   return logical_test ? value_if_true : value_if_false
 }
